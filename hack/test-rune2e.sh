@@ -92,7 +92,7 @@ function start-scheduler {
         args+=" ${extra_args}"
         log_file="${name}.log"
         for (( i=0; i<${service_num}; i++ )); do
-                sleep 1
+                sleep 5
                 gocmd=" && /usr/local/go/bin/go run resource-management/test/e2e/singleClientTest.go ${args} > ${SIM_LOG_DIR}/${log_file}.$i 2>&1 &"
                 sshcmd="${cmd}${gocmd}"
                 ssh-config "${sshcmd}" "${name}" "${zone}"
