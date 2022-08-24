@@ -162,8 +162,8 @@ if [ ${SIM_NUM} -gt 0 ]; then
         fi
 fi
 
-echo "Waiting 10 seconds to get simulator running"
-sleep 10
+echo "Waiting 180 seconds to get simulator running"
+sleep 180
 
 if [ ${CLIENT_NUM} -gt 0 ]; then
         if [[ "${SERVICE_URL}" != "" ]]; then
