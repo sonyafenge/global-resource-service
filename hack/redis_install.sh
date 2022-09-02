@@ -88,10 +88,22 @@ if [ `uname -s` == "Linux" ]; then
     sudo sed -i -e "s/^appendonly no$/appendonly yes/g" $REDIS_CONF_Ubuntu
     sudo egrep -v "(^#|^$)" $REDIS_CONF_Ubuntu |egrep "(appendonly |appendfsync )"
 
+    # === Enable Redis server remote support
+    sudo sed -i -e "s/^bind 127.0.0.1 -::1$/bind 0.0.0.0/g" $REDIS_CONF_Ubuntu
+    sudo egrep -v "(^#|^$)" $REDIS_CONF_Ubuntu |egrep "(bind 0.0.0.0)"
+
+    sudo sed -i -e "s/^protected-mode yes$/protected-mode no/g" $REDIS_CONF_Ubuntu
+    sudo egrep -v "(^#|^$)" $REDIS_CONF_Ubuntu |egrep "(protected-mode no)"
+    # === Enable Redis server remote support
+
+    # Restart redis-server as a service
     sudo ls -al /lib/systemd/system/ |grep redis
 
     sudo systemctl restart redis-server.service
     sudo systemctl status redis-server.service
+
+    # Check whether network port 6379 is listened
+    sudo netstat -nlpt | grep 6379
   else
     echo ""
     echo "This Linux OS ($LinuxOS) is currently not supported and exit"
