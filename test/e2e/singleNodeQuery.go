@@ -76,10 +76,6 @@ func main() {
 	batchNodeTimeout := time.After(testCfg.testDuration)
 	batchNodeFinish := make(chan bool)
 
-	var wgNode sync.WaitGroup
-	var wgMain sync.WaitGroup
-	wgMain.Add(2)
-
 	serviceInfo := strings.Split(cfg.ServiceUrl, ":")
 	if len(serviceInfo) == 0 {
 		klog.Errorf("Please ensure correct service url is provided, for example: 127.0.0.1:8080")
@@ -92,7 +88,7 @@ func main() {
 	klog.Infof("Requesting nodes from redis server")
 	logicalNodes := store.BatchLogicalNodesInquiry(requiredNum)
 	endTime := time.Since(startTime)
-	klog.V(3).Infof("Total %v nodes required from redis server: %v, Total nodes got from redis: %v in duration: %v, detailes: %v\n", requiredNum, redisIp, len(logicalNodes), endTime, logicalNodes)
+	klog.Infof("Total %v nodes required from redis server: %v, Total nodes got from redis: %v in duration: %v, detailes: %v\n", requiredNum, redisIp, len(logicalNodes), endTime, logicalNodes)
 
 	singleNode := make([]*types.LogicalNode, testCfg.singleNodeNum)
 	batchNode := make([]*types.LogicalNode, testCfg.batchNodeNum)
@@ -105,6 +101,10 @@ func main() {
 			batchNode[num] = logicalNodes[i]
 		}
 	}
+
+	var wgNode sync.WaitGroup
+	var wgMain sync.WaitGroup
+	wgMain.Add(2)
 
 	go func(wgmain *sync.WaitGroup, wgnode *sync.WaitGroup, client rmsclient.RmsInterface, testCfg *testConfig, nqs *stats.NodeQueryStats, timeout <-chan time.Time, finish chan bool) {
 		defer wgmain.Done()
@@ -183,7 +183,7 @@ func queryNodeStatus(wg *sync.WaitGroup, client rmsclient.RmsInterface, nqs *sta
 	if err != nil {
 		klog.Errorf("Failed to query node status for node ID: %s. error %v", nodeId, err)
 	}
-	klog.V(6).Infof("Request node (nodeId: %s, regionName: %s, rpName: %s), get node (nodeId: %s, regionName: %s, rpName: %s) in duration: %v", nodeId, regionName, rpName, respNode.Id, location.Region(respNode.GeoInfo.Region).String(), location.ResourcePartition(respNode.GeoInfo.ResourcePartition).String(), duration)
+	klog.V(3).Infof("Request node (nodeId: %s, regionName: %s, rpName: %s), get node (nodeId: %s, regionName: %s, rpName: %s) in duration: %v", nodeId, regionName, rpName, respNode.Id, location.Region(respNode.GeoInfo.Region).String(), location.ResourcePartition(respNode.GeoInfo.ResourcePartition).String(), duration)
 
 	if nodeId != respNode.Id {
 		klog.Errorf("Nodes Id doesn't match! Required: %v, Actual: %v\n", nodeId, respNode.Id)
