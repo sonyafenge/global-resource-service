@@ -168,14 +168,15 @@ if [ "${ENABLE_ADMIN_E2E}" == "true" ]; then
     echo "" >> ./csv/${csv_name}
     echo "${name}">> ./csv/${csv_name}
     echo "Metrics Item" "Query Interval","Node Num for each interval","perc50","perc90","perc99">> ./csv/${csv_name}
-    metrics_item="[Metrics][Nodes]"
-    for grep_line in $( ls | grep "\[Metrics\]\[Nodes\]" $name);do
+    line=$( echo $(grep "\[Metrics\]\[Nodes\]" $name | wc -l ))
+    for (( i=1; i<=${line}; i++ )); do
+      grep_line=$(echo $(grep "\[Metrics\]\[Nodes\]" $name | sed -n "$i p"))
       metrics_item="[Metrics][Nodes]"
       query_interval=$(echo $grep_line | sed "s/.*QueryInterval: //; s/, Number of nodes queried.*//")
       node_interval=$(echo $grep_line | sed "s/.*queried during each interval: //; s/, perc50.*//")
       perc50=$(echo $grep_line | sed "s/.*perc50: //; s/, perc90.*//")
       perc90=$(echo $grep_line | sed "s/.*perc90: //; s/, perc99.*//")
-      perc99=$(echo $grep_line | sed "s/.*perc99: //; s/\.//")
+      perc99=$(echo $grep_line | sed "s/.*perc99: //; ")
       echo "${metrics_item}","${query_interval}","${node_interval}","${perc50}","${perc90}","${perc99}">> ./csv/${csv_name}
     done
   done

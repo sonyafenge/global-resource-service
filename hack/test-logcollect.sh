@@ -103,7 +103,7 @@ fi
 
 if [ "${ENABLE_ADMIN_E2E}" == "true" ]; then
         if [ ${ADMINCLIENT_NUM} -gt 0 ]; then
-                echo "Collecting logs from ${#INSTANCE_ADMINCLIENT_ZONE[@]} client machines: "
+                echo "Collecting logs from ${#INSTANCE_ADMINCLIENT_ZONE[@]} admin client machines: "
                 index=0
                 for zone in "${INSTANCE_ADMINCLIENT_ZONE[@]}"; do
                         collect-log-instance "${ADMINCLIENT_INSTANCE_PREFIX}-${zone}-${index}" "${zone}" "${CLIENT_LOG_DIR}" "${DESTINATION}"
