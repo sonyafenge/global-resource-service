@@ -30,13 +30,12 @@ import (
 )
 
 type RegionConfig struct {
-	RegionName            string
-	RpNum                 int
-	NodesPerRP            int
-	RPDownNumber          int
-	MasterPort            string
-	DataPattern           string
-	WaitTimeForMakeRpDown int
+	RegionName                   string
+	RpNum                        int
+	NodesPerRP                   int
+	MasterPort                   string
+	DataPattern                  string
+	WaitTimeForDataChangePattern int
 }
 
 func Run(c *RegionConfig) error {
