@@ -16,11 +16,11 @@ export SIM_REGIONS="Beijing,Shanghai,Wulan,Guizhou,Reserved1" SIM_RP_NUM=10 NODE
 ```
 2. Simulator data pattern can be set seperately, total number should be same as SIM_NUM" 
 ```
-export SIM_DATA_PATTERN=Daily,Outage,Daily,Daily,Daily
+export SIM_DATA_PATTERN=Daily,Outage,Daily,Daily,Daily SIM_WAIT_DOWN_TIME=0,6,0,0,0
 ```
-1. If there is simulator data pattern is RP outage pattern, then set SIM_WAIT_DOWN_TIME=0,6,0,0,0 SIM_DOWN_RP_NUM=0,10,0,0,0". you can choose any time to simulate when RP is down
+1. If there is simulator data pattern is RP outage pattern, then set  SIM_DOWN_RP_NUM=0,10,0,0,0". 
 ```
-export SIM_WAIT_DOWN_TIME=0,6,0,0,0 SIM_DOWN_RP_NUM=0,10,0,0,0
+export SIM_DOWN_RP_NUM=0,10,0,0,0
 ```
 4. You can disable metrics to avoid possible performance lost by set "SERVICE_EXTRA_ARGS=--enable_metrics=false"
 ```

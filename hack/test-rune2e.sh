@@ -227,9 +227,9 @@ if [ ${SIM_NUM} -gt 0 ]; then
                         index=0
                         for name in "${instance_names[@]}"; do
                                 extra_args="${SIM_EXTRA_ARGS}"
-                                extra_args+=" --data_pattern=${SIM_DATA_PATTERN_LIST[index]}"
-                                if [[ "${SIM_DATA_PATTERN_LIST[index]}" == "Outage" &&  "${SIM_DOWN_TIME_LIST[index]}" != "" &&  "${SIM_DOWN_RP_NUM_LIST[index]}" != "" ]]; then
-                                        extra_args+=" --wait_time_for_make_rp_down=${SIM_DOWN_TIME_LIST[index]} --rp_down_number=${SIM_DOWN_RP_NUM_LIST[index]}"
+                                extra_args+=" --data_pattern=${SIM_DATA_PATTERN_LIST[index]} --wait_time_for_data_change_pattern=${SIM_DOWN_TIME_LIST[index]}"
+                                if [[ "${SIM_DATA_PATTERN_LIST[index]}" == "Outage" &&  "${SIM_DOWN_RP_NUM_LIST[index]}" != "" ]]; then
+                                        extra_args+="  --rp_down_number=${SIM_DOWN_RP_NUM_LIST[index]}"
                                         OUTAGE_REGION_NAME+="${SIM_REGION_LIST[$index]},"
                                 fi
                                 start-simulator "${name}" "${SIM_REGION_LIST[$index]}" "${SIM_RP_NUM}" "${NODES_PER_RP}" "${SIM_PORT}" "${INSTANCE_SIM_ZONE[0]}" "${SIM_LOG_LEVEL}" "${extra_args}"
@@ -239,9 +239,9 @@ if [ ${SIM_NUM} -gt 0 ]; then
                         index=0
                         for zone in "${INSTANCE_SIM_ZONE[@]}"; do
                                 extra_args="${SIM_EXTRA_ARGS}"
-                                extra_args+=" --data_pattern=${SIM_DATA_PATTERN_LIST[index]}"
-                                if [[ "${SIM_DATA_PATTERN_LIST[index]}" == "Outage" &&  "${SIM_DOWN_TIME_LIST[index]}" != "" &&  "${SIM_DOWN_RP_NUM_LIST[index]}" != ""  ]]; then
-                                        extra_args+=" --wait_time_for_make_rp_down=${SIM_DOWN_TIME_LIST[index]} --rp_down_number=${SIM_DOWN_RP_NUM_LIST[index]}"
+                                extra_args+=" --data_pattern=${SIM_DATA_PATTERN_LIST[index]} --wait_time_for_data_change_pattern=${SIM_DOWN_TIME_LIST[index]}"
+                                if [[ "${SIM_DATA_PATTERN_LIST[index]}" == "Outage" &&  "${SIM_DOWN_RP_NUM_LIST[index]}" != "" ]]; then
+                                        extra_args+="  --rp_down_number=${SIM_DOWN_RP_NUM_LIST[index]}"
                                         OUTAGE_REGION_NAME+="${SIM_REGION_LIST[$index]},"
                                 fi
                                 start-simulator "${SIM_INSTANCE_PREFIX}-${zone}-${index}" "${SIM_REGION_LIST[$index]}" "${SIM_RP_NUM}" "${NODES_PER_RP}" "${SIM_PORT}" "${zone}" "${SIM_LOG_LEVEL}" "${extra_args}"
@@ -296,7 +296,7 @@ if [ ${CLIENT_NUM} -gt 0 ]; then
                                         region_ids=""
                                         IFS=','; OUTAGE_REGION_NAME_LIST=($OUTAGE_REGION_NAME); unset IFS;
                                         for region in "${OUTAGE_REGION_NAME_LIST[@]}"; do
-                                                region_ids+="$(get-region-id),"
+                                                region_ids+="$(get-region-id $region),"
                                         done
                                         region_ids=${region_ids%,}
                                         CLIENT_EXTRA_ARGS=" --region_id_to_watch=${region_ids}"
