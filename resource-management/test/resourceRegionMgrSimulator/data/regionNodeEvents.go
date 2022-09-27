@@ -63,7 +63,7 @@ func Init(regionName string, rpNum, nodesPerRP int) {
 // Generate region node update event changes to
 // add them into RegionNodeEventsList
 //
-func MakeDataUpdate(data_pattern string, wait_time_for_make_rp_down int, rpDownNumber int) {
+func MakeDataUpdate(data_pattern string, wait_time_for_data_change_pattern int, rpDownNumber int) {
 	go func(data_pattern string, wait_time_for_data_change_pattern int, rpDownNumber int) {
 		switch data_pattern {
 		case "Outage":
