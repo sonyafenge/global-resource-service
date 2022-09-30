@@ -26,9 +26,9 @@ import (
 	"k8s.io/klog/v2"
 
 	"global-resource-service/resource-management/pkg/common-lib/types"
-	"global-resource-service/resource-management/pkg/common-lib/types/cache"
 	"global-resource-service/resource-management/pkg/common-lib/types/location"
 	"global-resource-service/resource-management/pkg/common-lib/types/runtime"
+	nodecache "global-resource-service/resource-management/test/resourceRegionMgrSimulator/cache"
 	"global-resource-service/resource-management/test/resourceRegionMgrSimulator/config"
 	simulatorTypes "global-resource-service/resource-management/test/resourceRegionMgrSimulator/types"
 )
@@ -39,7 +39,7 @@ import (
 // SnapshotNodeListEvents    - for subsequent pull and
 //                                 post CRV to discard all old node events
 var RegionNodeEventsList simulatorTypes.RegionNodeEvents
-var RegionNodeEventQueue *cache.EventQueuesByLocation
+var RegionNodeEventQueue *nodecache.NodeEventQueue
 var CurrentRVs types.TransitResourceVersionMap
 
 // The constants are for repeatly generate new modified events
@@ -56,7 +56,7 @@ func Init(regionName string, rpNum, nodesPerRP int) {
 	config.RpNum = rpNum
 	config.NodesPerRP = nodesPerRP
 
-	RegionNodeEventQueue = cache.NewEventQueuesByLocation()
+	RegionNodeEventQueue = nodecache.NewNodeEventQueue(config.RpNum)
 	RegionNodeEventsList, CurrentRVs = generateAddedNodeEvents(regionName, rpNum, nodesPerRP)
 }
 
