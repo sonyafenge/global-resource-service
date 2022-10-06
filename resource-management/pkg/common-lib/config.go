@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package handlers
+package common_lib
 
-// URL Path
 const (
-	// RegionlessResourcePath is the default api service url
-	RegionlessResourcePath = "/resources"
+	Len_ResourceManagementCheckpoint = 6
 )
+
+var ResourceManagementMeasurement_Enabled = true

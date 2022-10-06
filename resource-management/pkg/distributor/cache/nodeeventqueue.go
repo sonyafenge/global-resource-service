@@ -14,10 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package handlers
+package cache
 
-// URL Path
-const (
-	// RegionlessResourcePath is the default api service url
-	RegionlessResourcePath = "/resources"
+import (
+	objectcache "global-resource-service/resource-management/pkg/common-lib/types/cache"
 )
+
+type NodeEventQueue struct {
+	// corresponding client id
+	clientId string
+	*objectcache.EventQueuesByLocation
+}
+
+func NewNodeEventQueue(clientId string) *NodeEventQueue {
+	queue := &NodeEventQueue{EventQueuesByLocation: objectcache.NewEventQueuesByLocation()}
+	queue.clientId = clientId
+
+	return queue
+}
