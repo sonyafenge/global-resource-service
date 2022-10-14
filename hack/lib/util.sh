@@ -28,3 +28,17 @@ function ssh-config {
         --command "${cmd}" \
         --quiet &
 }
+
+# grs::util::ensure-bash-version
+# Check if we are using a supported bash version
+#
+function grs::util::ensure-bash-version {
+  # shellcheck disable=SC2004
+  if ((${BASH_VERSINFO[0]}<4)) || ( ((${BASH_VERSINFO[0]}==4)) && ((${BASH_VERSINFO[1]}<2)) ); then
+    echo "ERROR: This script requires a minimum bash version of 4.2, but got version of ${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}"
+    if [ "$(uname)" = 'Darwin' ]; then
+      echo "On macOS with homebrew 'brew install bash' is sufficient."
+    fi
+    exit 1
+  fi
+}
